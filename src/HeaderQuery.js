@@ -2,8 +2,9 @@ import React, {PropTypes} from "react"
 import _ from 'lodash'
 
 const queryChange = (onChange, header, ev) => {
-  const values = [ev.target.value].
-    reject(v => _.isNull(v) || _.isUndefined(v))
+  const values = _.reject([ev.target.value], v => {
+    _.isNull(v) || _.isUndefined(v)
+  })
   onChange(header.field, header.query, values)
 }
 
@@ -24,7 +25,7 @@ class LikeQuery extends React.Component {
 
   render() {
     return (
-      <input className="form-control" type="text" onChange={this.handleChange} />
+      <input className="form-control" type="text" onChange={::this.handleChange} />
     )
   }
 }
@@ -50,7 +51,7 @@ class EqQuery extends React.Component {
     const options = _.map(header.query.options, mapper)
 
     return (
-      <select className="form-control" onChange={this.handleChange}>
+      <select className="form-control" onChange={::this.handleChange}>
         <option value=""></option>
         {options.map(([label, value]) => <option key={value} value={value}>{label}</option>)}
       </select>
@@ -80,8 +81,8 @@ class RangeQuery extends React.Component {
   render() {
     return (
       <div>
-        <input className="form-control" type="text" ref="start" onChange={this.handleChange} placeholder="min" />
-        <input className="form-control" type="text" ref="end"   onChange={this.handleChange} placeholder="max" />
+        <input className="form-control" type="text" ref="start" onChange={::this.handleChange} placeholder="min" />
+        <input className="form-control" type="text" ref="end"   onChange={::this.handleChange} placeholder="max" />
       </div>
     )
   }

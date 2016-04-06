@@ -39,7 +39,7 @@ const searchStore = createStore(searches, (state, action) => {
     ],
 
     [actions.SEARCH_QUERY_CHANGED]: () => mapState(state, action, (search) => {
-      if(_(action.values).compact().any()) {
+      if(_.some(action.values || [])) {
         return search.
           setIn(['q', action.field, action.query.type], action.values).
           setIn(['page'], 1)
