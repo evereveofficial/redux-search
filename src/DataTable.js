@@ -20,9 +20,10 @@ class TableHead extends React.Component {
     if(!header.isSortable)
       return ''
 
+    const { search } = this.props;
     return classnames('sorting', {
-      sorting_desc: this.props.sort_order === 'desc',
-      sorting_asc: this.props.sort_order !== 'desc'
+      sorting_desc: search.sort_order === 'desc',
+      sorting_asc: search.sort_order !== 'desc'
     })
   }
 
