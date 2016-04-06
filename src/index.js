@@ -1,3 +1,10 @@
-import {SearchTableContainer} from './SearchTable'
+import SearchTableContainer from './SearchTable'
+import {reduxSearches, defaultReduxSearch} from './reducers'
 
-export default SearchTableContainer
+const ReduxSearch = {
+  SearchTable: SearchTableContainer,
+  reduxSearches,
+  defaultReduxSearch
+}
+
+export default ReduxSearch

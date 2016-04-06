@@ -1,7 +1,7 @@
 import expect from 'expect'
 import React from 'react'
 import TestUtils from 'react-addons-test-utils'
-import {Pagination} from '../src/Pagination'
+import Pagination from '../src/Pagination'
 
 function setup(search) {
   let props = {

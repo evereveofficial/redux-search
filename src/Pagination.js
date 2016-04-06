@@ -2,7 +2,7 @@ import React, { PropTypes } from "react"
 import classnames from 'classnames'
 import _ from 'lodash'
 
-export class Pagination extends React.Component {
+export default class Pagination extends React.Component {
   static propTypes = {
     search: PropTypes.object.isRequired,
     onPageChange: PropTypes.func.isRequired
