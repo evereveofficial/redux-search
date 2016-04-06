@@ -1,2 +1,3 @@
-export default class SearchTable {
-}
+import {SearchTableContainer} from './SearchTable'
+
+export default SearchTableContainer
