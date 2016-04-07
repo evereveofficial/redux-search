@@ -26,11 +26,21 @@ class RangeQuery extends React.Component {
     }
   }
 
+  submitMin(e) {
+    if (e.key === 'Enter')
+      this.props.updateMin(e)
+  }
+
+  submitMax(e) {
+    if (e.key === 'Enter')
+      this.props.updateMax(e)
+  }
+
   render() {
     return (
       <div>
-        <input className="form-control" type="text" onChange={this.props.updateMin} placeholder="min" />
-        <input className="form-control" type="text" onChange={this.props.updateMax} placeholder="max" />
+        <input className="form-control" type="text" onKeyPress={::this.submitMin} onBlur={this.props.updateMin} placeholder="min" />
+        <input className="form-control" type="text" onKeyPress={::this.submitMax} onBlur={this.props.updateMax} placeholder="max" />
       </div>
     )
   }
@@ -75,19 +85,6 @@ export class RangeQueryContainer extends React.Component {
       label: this.props.header.label,
       end: ev.target.value
     })
-  }
-
-  handleChange(ev) {
-    const { header } = this.props
-
-    const start = _.isEmpty(this.refs.start.value) ? null : this.refs.start.value
-    const end = _.isEmpty(this.refs.end.value) ? null : this.refs.end.value
-
-    const values = typeof(header.query.format) === 'function' ?
-      [header.query.fmtValue(start), header.query.fmtValue(end)] :
-      [start, end]
-
-    this.props.onQueryChange(header.field, header.query, values)
   }
 
   render() {

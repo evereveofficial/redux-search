@@ -1,10 +1,11 @@
 import SearchTableContainer from './SearchTable'
-import {reduxSearches, defaultReduxSearch} from './reducers'
+import {reduxSearches, defaultReduxSearch, querify} from './reducers'
 
 const ReduxSearch = {
   SearchTable: SearchTableContainer,
   reduxSearches,
-  defaultReduxSearch
+  defaultReduxSearch,
+  querify
 }
 
 export default ReduxSearch

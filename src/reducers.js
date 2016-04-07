@@ -13,6 +13,10 @@ export const defaultReduxSearch = Map({
   rangeQueries: List()
 })
 
+export function querify(searchState) {
+  return _.omit(searchState.toJS(), 'id', 'rangeQueries', 'total_count')
+}
+
 const searches = []
 
 function initializeSearch(searchId, field, order) {
