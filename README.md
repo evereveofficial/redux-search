@@ -168,6 +168,10 @@ export const ProductsContainer = connect(mapStateToProps)(Products)
 
 ```
 
+## Server side expectations
+It's also expected that the JSON data coming back from the server will include a `total_count` property which is required
+for the pagination to work correctly.
+
 ## Contributing
 
 To contribute, please create a fork and submit pull requests. Pull requests from outside of the organization will not be accepted without tests.
