@@ -54,7 +54,7 @@ class SearchTable extends React.Component {
   }
 
   handlePageChange(page) {
-    this.dispatch('searchLimitChanged', page)
+    this.dispatch('searchPageChanged', page)
   }
 
   handleQueryChange(field, query, values) {
