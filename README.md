@@ -29,7 +29,7 @@ const rootReducer = combineReducers({
   reduxSearches: ReduxSearch.reduxSearches
 });
 
-export default rootReducer;
+export default rootReducer
 
 ```
 
@@ -40,9 +40,9 @@ populate the table. The actual table rows must also be provided as a prop that i
 fetch function is called. Here's an example component.
 
 ```javascript
-import React, {PropTypes} from 'react';
-import ReduxSearch from '@ackmann-dickenson/redux-search';
-import {searchProducts} from './actions';
+import React, {PropTypes} from 'react'
+import ReduxSearch from '@ackmann-dickenson/redux-search'
+import {searchProducts} from './actions'
 
 const headers = [{
   field: 'name',
@@ -54,12 +54,12 @@ const headers = [{
   label: 'Price',
   isSortable: true,
   query: { type: 'range' }
-}];
+}]
 
 export default class ProductsDataTable extends React.Component {
   static propTypes = {
     rows: PropTypes.object.isRequired
-  };
+  }
 
 
   render() {
@@ -71,7 +71,7 @@ export default class ProductsDataTable extends React.Component {
         field={'name'}
         headers={headers}
         rows={this.props.rows} />
-    );
+    )
   }
 }
 ```
@@ -82,16 +82,16 @@ When the component is rendered, it will dispatch an action that causes the state
 your function will need to accept a `searchId` parameter and retrieve the state using some utilities provided by the package. E.g.
 
 ```javascript
-import api from "root/api";
-import ReduxSearch from '@ackmann-dickenson/redux-search';
+import api from "root/api"
+import ReduxSearch from '@ackmann-dickenson/redux-search'
 
-export const PRODUCTS_REQUESTED = "PRODUCTS_REQUESTED";
-export const PRODUCTS_RECEIVED = "PRODUCTS_RECEIVED";
-export const PRODUCTS_RECEIVED_ERROR = "PRODUCTS_RECEIVED_ERROR";
+export const PRODUCTS_REQUESTED = "PRODUCTS_REQUESTED"
+export const PRODUCTS_RECEIVED = "PRODUCTS_RECEIVED"
+export const PRODUCTS_RECEIVED_ERROR = "PRODUCTS_RECEIVED_ERROR"
 
 export function searchProducts(searchId) {
   return function(dispatch, getState) {
-    dispatch({type: PRODUCTS_REQUESTED});
+    dispatch({type: PRODUCTS_REQUESTED})
 
     const search = ReduxSearch.querify(
       getState().reduxSearches.find(s => s.get('id') === searchId) ||
@@ -111,8 +111,8 @@ export function searchProducts(searchId) {
         dispatch({
           type: PRODUCTS_RECEIVED_ERROR,
           errors: resp.data.errors
-        });
-      });
+        })
+      })
   }
 }
 
