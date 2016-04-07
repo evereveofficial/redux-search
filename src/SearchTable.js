@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {DataTable} from './DataTable'
-import {CreateSearch, actions} from './actions'
+import {CreateSearch, DeleteSearch, actions} from './actions'
 import {defaultReduxSearch} from './reducers'
 
 class SearchTable extends React.Component {
@@ -29,6 +29,10 @@ class SearchTable extends React.Component {
 
   componentDidMount() {
     CreateSearch(this.props.dispatch, this.config())
+  }
+
+  componentWillUnmount() {
+    DeleteSearch(this.props.dispatch, this.config())
   }
 
   search() {

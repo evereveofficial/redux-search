@@ -1,4 +1,5 @@
 export const CREATE_NEW_SEARCH = "CREATE_NEW_SEARCH"
+export const DELETE_SEARCH = "DELETE_SEARCH"
 export const SEARCH_FIELD_CHANGED = "SEARCH_FIELD_CHANGED"
 export const SEARCH_LIMIT_CHANGED = "SEARCH_LIMIT_CHANGED"
 export const SEARCH_PAGE_CHANGED = "SEARCH_PAGE_CHANGED"
@@ -26,6 +27,13 @@ export function CreateSearch(dispatch, config) {
     order: config.order || ''
   })
   return fetch(dispatch)
+}
+
+export function DeleteSearch(dispatch, config) {
+  dispatch({
+    type: DELETE_SEARCH,
+    searchId: config.searchId
+  })
 }
 
 export function actions(config) {
