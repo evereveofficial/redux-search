@@ -27,7 +27,7 @@ import ReduxSearch from '@ackmann-dickenson/redux-search'
 const rootReducer = combineReducers({
   router: routerStateReducer,
   reduxSearches: ReduxSearch.reduxSearches
-});
+})
 
 export default rootReducer
 
@@ -115,6 +115,56 @@ export function searchProducts(searchId) {
       })
   }
 }
+
+```
+
+### Providing table rows
+
+It's really up to you how you provide the table rows. As long as the rows are a function of the state that your reducer is updating as a result of your action creator, the `SearchTable` will display them. Here's an example of a container component that would wrap the `ProductsDataTable` shown above.
+
+```javascript
+import React, {PropTypes} from 'react'
+import {connect} from 'react-redux'
+import {fetchProducts} from './actions'
+import {ProductsDataTable} from './ProductsDataTable'
+
+export class Products extends React.Component {
+  static propTypes = {
+    products: PropTypes.object.isRequired
+  }
+  
+  rows() {
+    return this.props.products.map(p => {
+      return (
+        <tr key={p.product_id}>
+          <td>{p.name}</td>
+          <td>{p.price}</td>
+        </tr>
+      )
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <div className="wrapper wrapper-content animated fadeInRight">
+          <div className="row">
+            <ProductsDataTable
+              rows={this.rows()} />
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    products: state.products.get("products")
+  }
+}
+
+export const ProductsContainer = connect(mapStateToProps)(Products)
 
 ```
 
