@@ -60,6 +60,7 @@ class SearchTable extends React.Component {
   render() {
     return (
       <DataTable
+        {...this.props}
         headers={this.props.headers}
         rows={this.props.rows}
         search={this.search()}

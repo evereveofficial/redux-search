@@ -9,7 +9,8 @@ export const defaultReduxSearch = Map({
   total_count: 0,
   sort_field: '',
   sort_order: 'asc',
-  q: Map()
+  q: Map(),
+  rangeQueries: List()
 })
 
 const searches = []
@@ -29,6 +30,37 @@ const mapState = (state, action, mutate) => {
 
     return mutate(search)
   })
+}
+
+const mergeQueries = (rangeQueries, action) => {
+  if (rangeQueries.find(q => q.get('label') === action.label))
+      return rangeQueries;
+
+  return [...rangeQueries, Map({ label: action.label, start: action.start, end: action.end })]
+}
+
+const updateQueryStart = (rangeQueries, action) => {
+  return rangeQueries.map(q => {
+    if (q.get('label') === action.label) {
+      return q.merge({
+        start: action.start
+      })
+    }
+
+    return q
+  });
+}
+
+const updateQueryEnd = (rangeQueries, action) => {
+  return rangeQueries.map(q => {
+    if (q.get('label') === action.label) {
+      return q.merge({
+        end: action.end
+      })
+    }
+
+    return q
+  });
 }
 
 const searchStore = createStore(searches, (state, action) => {
@@ -79,6 +111,24 @@ const searchStore = createStore(searches, (state, action) => {
         sort_field: action.field,
         sort_order: order
       })
+    }),
+
+    [actions.INITIALIZE_RANGE_QUERY]: () => mapState(state, action, (search) => {
+      return search.merge({
+        rangeQueries: mergeQueries(search.get('rangeQueries'), action)
+      })
+    }),
+
+    [actions.RANGE_QUERY_START_UPDATED]: () => mapState(state, action, (search) => {
+      return search.merge({
+        rangeQueries: updateQueryStart(search.get('rangeQueries'), action)
+      })
+    }),
+
+    [actions.RANGE_QUERY_END_UPDATED]: () => mapState(state, action, (search) => {
+      return search.merge({
+        rangeQueries: updateQueryEnd(search.get('rangeQueries'), action)
+      })
     })
   }
 })
@@ -86,4 +136,3 @@ const searchStore = createStore(searches, (state, action) => {
 export function reduxSearches(state=searches, action) {
   return searchStore(state, action)
 }
-

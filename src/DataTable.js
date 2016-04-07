@@ -5,6 +5,36 @@ import Pagination from "./Pagination"
 import LimitSelect from "./LimitSelect"
 import HeaderQuery from "./HeaderQuery"
 
+class HeaderQueryRow extends React.Component {
+  static propTypes = {
+    search: PropTypes.object.isRequired,
+    headers: PropTypes.array.isRequired
+  }
+
+  render() {
+    const queryHeaders = this.props.headers.filter(h => h.query)
+    if (_.isEmpty(queryHeaders))
+      return false;
+
+    return (
+      <tr role="row query-row">
+        {
+          this.props.headers.map(h => {
+            if (h.query)
+              return (
+                <th className="query" key={h.label}>
+                  <HeaderQuery {...this.props} header={h} onQueryChange={this.props.onQueryChange} />
+                </th>
+              )
+
+            return <th className="query" key={h.label}></th>
+          })
+        }
+      </tr>
+    )
+  }
+}
+
 class TableHead extends React.Component {
   static propTypes = {
     search: PropTypes.object.isRequired,
@@ -43,26 +73,13 @@ class TableHead extends React.Component {
     )
   }
 
-  queryHeader(h) {
-    if (h.query)
-      return (
-        <th className="query" key={h.label}>
-          <HeaderQuery header={h} onQueryChange={this.props.onQueryChange} />
-        </th>
-      )
-
-    return <th className="query" key={h.label}></th>
-  }
-
   render() {
     const headers = this.props.headers.map(::this.header)
-    const queryHeaders = this.props.headers.map(::this.queryHeader)
-    const displayHeaders = _.some(queryHeaders)
 
     return (
       <thead>
         <tr role="row">{headers}</tr>
-        {displayHeaders ? (<tr role="row query-row">{queryHeaders}</tr>) : ''}
+        <HeaderQueryRow {...this.props} />
       </thead>
     )
   }
