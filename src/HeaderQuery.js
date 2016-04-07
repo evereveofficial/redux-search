@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import {RangeQueryContainer} from './RangeQuery'
+import {RangeQuery} from './RangeQuery'
 import _ from 'lodash'
 
 const queryChange = (onChange, header, ev) => {
@@ -63,7 +63,7 @@ class EqQuery extends React.Component {
 const components = {
   like: LikeQuery,
   eq: EqQuery,
-  range: RangeQueryContainer
+  range: RangeQuery
 }
 
 export default class HeaderQuery extends React.Component {

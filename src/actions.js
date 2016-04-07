@@ -6,10 +6,6 @@ export const SEARCH_PAGE_CHANGED = "SEARCH_PAGE_CHANGED"
 export const SEARCH_QUERY_CHANGED = "SEARCH_QUERY_CHANGED"
 export const SEARCH_RESULTS_UPDATED = "SEARCH_RESULTS_UPDATED"
 
-export const INITIALIZE_RANGE_QUERY = "INITIALIZE_RANGE_QUERY"
-export const RANGE_QUERY_START_UPDATED = "RANGE_QUERY_START_UPDATED"
-export const RANGE_QUERY_END_UPDATED = "RANGE_QUERY_END_UPDATED"
-
 const fetcher = config => dispatch =>
   dispatch(config.fetch(config.searchId)).then(resp =>
     dispatch({
