@@ -74,7 +74,7 @@ const searchStore = createStore(searches, (state, action) => {
       initializeSearch(action.searchId, action.field, action.order)
     ],
 
-    [actions.DELETE_SEARCH]: () => state.reject(search => search.get('id') === action.searchId),
+    [actions.DELETE_SEARCH]: () => _.reject(state, search => search.get('id') === action.searchId),
 
     [actions.SEARCH_QUERY_CHANGED]: () => mapState(state, action, (search) => {
       if(_.some(action.values || [])) {
