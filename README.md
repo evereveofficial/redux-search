@@ -93,10 +93,7 @@ export function searchProducts(searchId) {
   return function(dispatch, getState) {
     dispatch({type: PRODUCTS_REQUESTED})
 
-    const search = ReduxSearch.querify(
-      getState().reduxSearches.find(s => s.get('id') === searchId) ||
-        ReduxSearch.defaultReduxSearch.merge({ sort_field: 'name' })
-    )
+    const search = ReduxSearch.querify(getState(), searchId, 'name')
 
     return api.getProducts(search)
       .then(resp => {

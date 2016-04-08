@@ -12,8 +12,11 @@ export const defaultReduxSearch = Map({
   q: Map()
 })
 
-export function querify(searchState) {
-  return _.omit(searchState.toJS(), 'id', 'total_count')
+export function querify(state, searchId, defaultColumn) {
+  const search = state.reduxSearches.find(s => s.get('id') === searchId) ||
+    defaultReduxSearch.merge({ sort_field: defaultColumn })
+
+  return _.omit(search.toJS(), 'id', 'total_count')
 }
 
 const searches = []
