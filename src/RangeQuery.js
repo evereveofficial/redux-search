@@ -1,4 +1,6 @@
 import React, {PropTypes} from 'react'
+import {QueryInput} from './QueryInput'
+
 import {
   INITIALIZE_RANGE_QUERY,
   RANGE_QUERY_START_UPDATED,
@@ -10,9 +12,7 @@ export class RangeQuery extends React.Component {
     header: PropTypes.object.isRequired,
   }
 
-  handleChange(e) {
-    e.preventDefault()
-
+  handleChange() {
     const { header } = this.props
     const [ start, end ] = [this.start.value, this.end.value]
     const values = typeof(header.query.format) === 'function' ?
@@ -22,11 +22,23 @@ export class RangeQuery extends React.Component {
     this.props.onQueryChange(header.field, header.query, values)
   }
 
+  queryChange() {
+    return (header, e) => this.handleChange()
+  }
+
   render() {
     return (
       <div>
-        <input ref={(node) => this.start = node} onChange={::this.handleChange} className="form-control" type="text" placeholder="min" />
-        <input ref={(node) => this.end = node} onChange={::this.handleChange} className="form-control" type="text" placeholder="max" />
+        <QueryInput
+          {...this.props}
+          update={(node) => this.start = node}
+          queryChange={this.queryChange()}
+          placeholder="min" />
+        <QueryInput
+          {...this.props}
+          update={(node) => this.end = node}
+          queryChange={this.queryChange()}
+          placeholder="max" />
       </div>
     )
   }

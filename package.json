@@ -1,6 +1,6 @@
 {
   "name": "@ackmann-dickenson/redux-search",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A redux implementation to easily add search, sort, and pagination to any result set.",
   "main": "lib/index.js",
   "scripts": {

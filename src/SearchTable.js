@@ -12,7 +12,12 @@ class SearchTable extends React.Component {
     headers: PropTypes.array.isRequired,
     rows: PropTypes.object.isRequired,
     fetch: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    updateOnKeyPress: PropTypes.bool
+  }
+
+  static defaultProps = {
+    updateOnKeyPress: false
   }
 
   static defaultProps = {
@@ -71,7 +76,7 @@ class SearchTable extends React.Component {
         onHeaderClick={::this.handleHeaderClick}
         onLimitChange={::this.handleLimitChange}
         onPageChange={::this.handlePageChange}
-        onQueryChange={_.debounce(::this.handleQueryChange, 1000)} />
+        onQueryChange={::this.handleQueryChange} />
     )
   }
 }

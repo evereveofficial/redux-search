@@ -1,9 +1,10 @@
 import React, {PropTypes} from 'react'
 import {RangeQuery} from './RangeQuery'
+import {QueryInput} from './QueryInput'
 import _ from 'lodash'
 
-const queryChange = (onChange, header, ev) => {
-  const values = _.reject([ev.target.value], v => {
+const queryChange = (onChange, header, value) => {
+  const values = _.reject([value], v => {
     _.isNull(v) || _.isUndefined(v)
   })
   onChange(header.field, header.query, values)
@@ -19,14 +20,15 @@ class LikeQuery extends React.Component {
     onQueryChange: PropTypes.func.isRequired
   }
 
-  handleChange(ev) {
-    const { header } = this.props
-    queryChange(this.props.onQueryChange, header, ev)
+  queryChange() {
+    return (header, val) => {
+      queryChange(this.props.onQueryChange, header, val)
+    }
   }
 
   render() {
     return (
-      <input className="form-control" type="text" onChange={::this.handleChange} />
+      <QueryInput {...this.props} queryChange={this.queryChange()} />
     )
   }
 }
@@ -39,7 +41,7 @@ class EqQuery extends React.Component {
 
   handleChange(ev) {
     const { header } = this.props
-    queryChange(this.props.onQueryChange, header, ev)
+    queryChange(this.props.onQueryChange, header, ev.target.value)
   }
 
   render() {
@@ -77,7 +79,10 @@ export default class HeaderQuery extends React.Component {
     const Query = components[header.query.type] || NoQuery
 
     return (
-      <Query {...this.props} header={header} query={header.query} onQueryChange={this.props.onQueryChange} />
+      <Query
+        {...this.props}
+        header={header}
+        query={header.query} />
     )
   }
 }
