@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import _ from 'lodash'
 
 
-class KeyPressInput extends React.Component {
+export class KeyPressInput extends React.Component {
   static propTypes = {
     header: PropTypes.object.isRequired,
     queryChange: PropTypes.func.isRequired
@@ -20,7 +20,7 @@ class KeyPressInput extends React.Component {
   }
 }
 
-class CompletedInput extends React.Component {
+export class CompletedInput extends React.Component {
   static propTypes = {
     header: PropTypes.object.isRequired,
     queryChange: PropTypes.func.isRequired
@@ -43,7 +43,7 @@ class CompletedInput extends React.Component {
   }
 }
 
-export class QueryInput extends React.Component {
+export default class QueryInput extends React.Component {
   static propTypes = {
     header: PropTypes.object.isRequired,
     queryChange: PropTypes.func.isRequired

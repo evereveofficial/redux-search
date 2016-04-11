@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
-import {RangeQuery} from './RangeQuery'
-import {QueryInput} from './QueryInput'
+import RangeQuery from './RangeQuery'
+import QueryInput from './QueryInput'
 import _ from 'lodash'
 
 const queryChange = (onChange, header, value) => {

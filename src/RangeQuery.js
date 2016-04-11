@@ -1,13 +1,7 @@
 import React, {PropTypes} from 'react'
-import {QueryInput} from './QueryInput'
+import QueryInput from './QueryInput'
 
-import {
-  INITIALIZE_RANGE_QUERY,
-  RANGE_QUERY_START_UPDATED,
-  RANGE_QUERY_END_UPDATED
-} from './actions'
-
-export class RangeQuery extends React.Component {
+export default class RangeQuery extends React.Component {
   static propTypes = {
     header: PropTypes.object.isRequired,
   }
