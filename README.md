@@ -95,21 +95,19 @@ export function searchProducts(searchId) {
 
     const search = ReduxSearch.querify(getState(), searchId, 'name')
 
-    return api.getProducts(search)
-      .then(resp => {
-        dispatch({
-          type: PRODUCTS_RECEIVED,
-          results: resp.data.results
-        });
+    return api.getProducts(search).then(resp => {
+      dispatch({
+        type: PRODUCTS_RECEIVED,
+        results: resp.data.results
+      })
 
-        return resp;
+      return resp
+    }).catch(resp => {
+      dispatch({
+        type: PRODUCTS_RECEIVED_ERROR,
+        errors: resp.data.errors
       })
-      .catch(resp => {
-        dispatch({
-          type: PRODUCTS_RECEIVED_ERROR,
-          errors: resp.data.errors
-        })
-      })
+    })
   }
 }
 
@@ -122,7 +120,6 @@ It's really up to you how you provide the table rows. As long as the rows are a 
 ```javascript
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {fetchProducts} from './actions'
 import {ProductsDataTable} from './ProductsDataTable'
 
 export class Products extends React.Component {
