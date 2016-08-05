@@ -140,6 +140,7 @@ export class DataTable extends React.Component {
       headers,
       onLimitChange,
       onPageChange,
+      renderRow
     } = this.props;
 
     return (
