@@ -7,25 +7,27 @@ export const defaultReduxSearch = Map({
   page: 1,
   limit: 20,
   total_count: 0,
+  results: List(),
   sort_field: '',
   sort_order: 'asc',
-  q: Map()
+  q: Map(),
+  isSearching: false,
+  resultsUpdateStyle: 'replace', // Valid options: replace and append
 })
 
-export function querify(state, searchId, defaultColumn) {
+export function querify(state, searchId, defaultSearch) {
   const search = state.reduxSearches.find(s => s.get('id') === searchId) ||
-    defaultReduxSearch.merge({ sort_field: defaultColumn })
+    defaultReduxSearch.merge(defaultSearch)
 
-  return _.omit(search.toJS(), 'id', 'total_count')
+  return _.omit(search.toJS(), 'id', 'total_count', 'results')
 }
 
 const searches = []
 
-function initializeSearch(searchId, field, order) {
+function initializeSearch(searchId, searchConfig) {
   return defaultReduxSearch.merge({
     id: searchId,
-    sort_field: field,
-    sort_order: order || 'asc'
+    ...searchConfig
   })
 }
 
@@ -42,10 +44,18 @@ const searchStore = createStore(searches, (state, action) => {
   return {
     [actions.CREATE_NEW_SEARCH]: () => [
       ...state,
-      initializeSearch(action.searchId, action.field, action.order)
+      initializeSearch(action.searchId, action.searchConfig)
     ],
 
     [actions.DELETE_SEARCH]: () => _.reject(state, search => search.get('id') === action.searchId),
+
+    [actions.SEARCH_STARTED]: () => mapState(state, action, (search) => {
+      return search.merge({isSearching: true})
+    }),
+
+    [actions.SEARCH_ENDED]: () => mapState(state, action, (search) => {
+      return search.merge({isSearching: false})
+    }),
 
     [actions.SEARCH_QUERY_CHANGED]: () => mapState(state, action, (search) => {
       if(_.some(action.values || [])) {
@@ -59,7 +69,10 @@ const searchStore = createStore(searches, (state, action) => {
 
     [actions.SEARCH_RESULTS_UPDATED]: () => mapState(state, action, (search) => {
       return search.merge({
-        total_count: action.total_count
+        total_count: action.total_count,
+        results: search.get('resultsUpdateStyle') === 'append'
+          ? search.get('results').push(...action.results)
+          : action.results
       })
     }),
 

@@ -1,26 +1,33 @@
 export const CREATE_NEW_SEARCH = "CREATE_NEW_SEARCH"
 export const DELETE_SEARCH = "DELETE_SEARCH"
+export const SEARCH_STARTED = "SEARCH_STARTED"
+export const SEARCH_ENDED = "SEARCH_ENDED"
 export const SEARCH_FIELD_CHANGED = "SEARCH_FIELD_CHANGED"
 export const SEARCH_LIMIT_CHANGED = "SEARCH_LIMIT_CHANGED"
 export const SEARCH_PAGE_CHANGED = "SEARCH_PAGE_CHANGED"
 export const SEARCH_QUERY_CHANGED = "SEARCH_QUERY_CHANGED"
 export const SEARCH_RESULTS_UPDATED = "SEARCH_RESULTS_UPDATED"
 
-const fetcher = config => dispatch =>
-  dispatch(config.fetch(config.searchId)).then(resp =>
-    dispatch({
-      type: SEARCH_RESULTS_UPDATED,
-      total_count: resp.data.total_count,
-      id: config.searchId
-    }))
+const fetcher = config => dispatch => {
+  dispatch({type: SEARCH_STARTED, id: config.searchId})
+  dispatch(config.fetch(config.searchId))
+    .then(resp => {
+      dispatch({
+        type: SEARCH_RESULTS_UPDATED,
+        total_count: resp.data.total_count,
+        results: resp.data.results || [],
+        id: config.searchId
+      })
+      dispatch({type: SEARCH_ENDED, id: config.searchId})
+    })
+}
 
 export function CreateSearch(dispatch, config) {
   const fetch = fetcher(config)
   dispatch({
     type: CREATE_NEW_SEARCH,
     searchId: config.searchId,
-    field: config.field,
-    order: config.order || ''
+    searchConfig: config.searchConfig
   })
   return fetch(dispatch)
 }
