@@ -10,7 +10,7 @@ class SearchTable extends React.Component {
     field: PropTypes.string.isRequired,
     reduxSearches: PropTypes.array.isRequired,
     headers: PropTypes.array.isRequired,
-    rows: PropTypes.object.isRequired,
+    renderRow: PropTypes.func.isRequired,
     fetch: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     updateOnKeyPress: PropTypes.bool
@@ -70,8 +70,6 @@ class SearchTable extends React.Component {
     return (
       <DataTable
         {...this.props}
-        headers={this.props.headers}
-        rows={this.props.rows}
         search={this.search()}
         onHeaderClick={::this.handleHeaderClick}
         onLimitChange={::this.handleLimitChange}

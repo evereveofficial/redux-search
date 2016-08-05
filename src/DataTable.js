@@ -129,11 +129,19 @@ export class ResultsInfo extends React.Component {
 
 export class DataTable extends React.Component {
   static propTypes = {
-    rows: PropTypes.object.isRequired,
+    renderRow: PropTypes.func.isRequired,
+    search: PropTypes.object.isRequired,
     headers: PropTypes.array.isRequired
   }
 
   render() {
+    const {
+      search,
+      headers,
+      onLimitChange,
+      onPageChange,
+    } = this.props;
+
     return (
       <div className="dataTables_wrapper form-inline dt-bootstrap">
         <div className="row">
@@ -142,35 +150,35 @@ export class DataTable extends React.Component {
               <label>
                 Show&nbsp;
                   <LimitSelect
-                    search={this.props.search}
-                    onLimitChange={this.props.onLimitChange} />
+                    search={search}
+                    onLimitChange={onLimitChange} />
                 &nbsp;entries
               </label>
             </div>
           </div>
           <div className="col-sm-7">
             <Pagination
-              search={this.props.search}
-              onPageChange={this.props.onPageChange} />
+              search={search}
+              onPageChange={onPageChange} />
           </div>
         </div>
         <div className="row">
           <div className="col-sm-12">
             <table className="table table-striped table-bordered table-hover dataTables-example dataTable">
-              <TableHead {...this.props} headers={this.props.headers}></TableHead>
-              <tbody>{this.props.rows}</tbody>
-              <TableFoot headers={this.props.headers}></TableFoot>
+              <TableHead {...this.props} headers={headers}></TableHead>
+              <tbody>{search.results.map(row => renderRow(row))}</tbody>
+              <TableFoot headers={headers}></TableFoot>
             </table>
           </div>
         </div>
         <div className="row">
           <div className="col-sm-5">
-            <ResultsInfo search={this.props.search} />
+            <ResultsInfo search={search} />
           </div>
           <div className="col-sm-7">
             <Pagination
-              search={this.props.search}
-              onPageChange={this.props.onPageChange} />
+              search={search}
+              onPageChange={onPageChange} />
           </div>
         </div>
       </div>

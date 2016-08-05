@@ -11,7 +11,6 @@ class SearchListView extends React.Component {
     searchConfig: PropTypes.object.isRequired,
     reduxSearches: PropTypes.array.isRequired,
     renderRow: PropTypes.func.isRequired,
-    rows: PropTypes.object.isRequired,
     fetch: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     updateOnKeyPress: PropTypes.bool
