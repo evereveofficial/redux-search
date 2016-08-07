@@ -24,20 +24,14 @@ class SearchTable extends React.Component {
   }
 
   config() {
-    const { searchId, dataSource } = this.props;
-
     return {
-      searchId,
-      dataSource,
-      searchConfig: dataSource.searchConfig
+      searchId: this.props.searchId,
+      dataSource: this.props.dataSource
     }
   }
 
-  componentWillMount() {
-    CreateSearch(this.props.dispatch, this.config())
-  }
-
   componentDidMount() {
+    CreateSearch(this.props.dispatch, this.config())
     this.dispatch('reload')
   }
 

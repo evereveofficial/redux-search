@@ -4,22 +4,22 @@ import * as actions from './actions'
 
 export const defaultReduxSearch = Map({
   id: '',
-  page: 1,
-  limit: 20,
   total_count: 0,
   results: List(),
+  resultsUpdateStyle: 'replace', // Valid options: replace and append
+  isSearching: false,
+  page: 1,
+  limit: 20,
   sort_field: '',
   sort_order: 'asc',
   q: Map(),
-  isSearching: false,
-  resultsUpdateStyle: 'replace', // Valid options: replace and append
 })
 
-export function querify(state, searchId, defaultSearch) {
+export function querify(state, searchId, dataSourceSearchConfig) {
   const search = state.reduxSearches.find(s => s.get('id') === searchId) ||
-    defaultReduxSearch.merge(defaultSearch)
+    defaultReduxSearch.merge(dataSourceSearchConfig)
 
-  return _.omit(search.toJS(), 'id', 'total_count', 'results')
+  return _.omit(search.toJS(), 'id', 'total_count', 'results', 'isSearching', 'resultsUpdateStyle')
 }
 
 const searches = []

@@ -8,16 +8,10 @@ import _ from 'lodash';
 class SearchListView extends React.Component {
   static propTypes = {
     searchId: PropTypes.string.isRequired,
-    searchConfig: PropTypes.object.isRequired,
     reduxSearches: PropTypes.array.isRequired,
     renderRow: PropTypes.func.isRequired,
-    fetch: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    updateOnKeyPress: PropTypes.bool
-  }
-
-  static defaultProps = {
-    updateOnKeyPress: false
+    dataSource: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired
   }
 
   static defaultProps = {
@@ -25,15 +19,25 @@ class SearchListView extends React.Component {
   }
 
   config() {
+    const { searchId, dataSource } = this.props;
+
     return {
-      searchId: this.props.searchId,
-      searchConfig: _.merge({}, this.props.searchConfig, {resultsUpdateStyle: 'append'}),
-      fetch: this.props.fetch
+      searchId,
+      dataSource,
+      searchConfig: _.merge(
+        {},
+        dataSource.searchConfig,
+        {resultsUpdateStyle: 'append'}
+      ),
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     CreateSearch(this.props.dispatch, this.config())
+  }
+
+  componentDidMount() {
+    this.dispatch('reload')
   }
 
   componentWillUnmount() {

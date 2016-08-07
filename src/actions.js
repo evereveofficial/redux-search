@@ -1,3 +1,6 @@
+import { findSearchById } from './utils'
+import { querify } from './reducers'
+
 export const CREATE_NEW_SEARCH = "CREATE_NEW_SEARCH"
 export const DELETE_SEARCH = "DELETE_SEARCH"
 export const SEARCH_STARTED = "SEARCH_STARTED"
@@ -8,14 +11,16 @@ export const SEARCH_PAGE_CHANGED = "SEARCH_PAGE_CHANGED"
 export const SEARCH_QUERY_CHANGED = "SEARCH_QUERY_CHANGED"
 export const SEARCH_RESULTS_UPDATED = "SEARCH_RESULTS_UPDATED"
 
-const fetcher = config => dispatch => {
-  dispatch({type: SEARCH_STARTED, id: config.searchId})
-  dispatch(config.fetch(config.searchId))
-    .then(resp => {
+const fetcher = config => (dispatch, state) => {
+  const searchQuery = querify(state, config.searchId, config.dataSource.searchConfig)
+
+  dispatch({type: SEARCH_STARTED, id: config.searchId, searchQuery})
+  config.dataSource.search(searchQuery, dispatch, state)
+    .then(searchResponse => {
       dispatch({
         type: SEARCH_RESULTS_UPDATED,
-        total_count: resp.data.total_count,
-        results: resp.data.results || [],
+        total_count: searchResponse.total_count,
+        results: searchResponse.results || [],
         id: config.searchId
       })
       dispatch({type: SEARCH_ENDED, id: config.searchId})
@@ -23,13 +28,11 @@ const fetcher = config => dispatch => {
 }
 
 export function CreateSearch(dispatch, config) {
-  const fetch = fetcher(config)
   dispatch({
     type: CREATE_NEW_SEARCH,
     searchId: config.searchId,
     searchConfig: config.searchConfig
   })
-  return fetch(dispatch)
 }
 
 export function DeleteSearch(dispatch, config) {
@@ -43,38 +46,43 @@ export function actions(config) {
   const fetch = fetcher(config)
 
   return {
+    reload: () => {
+      return function(dispatch, getState) {
+        return fetch(dispatch, getState())
+      }
+    },
     searchSortFieldChanged: (field) => {
-      return function(dispatch) {
+      return function(dispatch, getState) {
         dispatch({
           type: SEARCH_FIELD_CHANGED,
           field: field,
           id: config.searchId
         })
-        return fetch(dispatch)
+        return fetch(dispatch, getState())
       }
     },
     searchLimitChanged: (limit) => {
-      return function(dispatch) {
+      return function(dispatch, getState) {
         dispatch({
           type: SEARCH_LIMIT_CHANGED,
           limit: limit,
           id: config.searchId
         })
-        return fetch(dispatch)
+        return fetch(dispatch, getState())
       }
     },
     searchPageChanged: (page) => {
-      return function(dispatch) {
+      return function(dispatch, getState) {
         dispatch({
           type: SEARCH_PAGE_CHANGED,
           page: page,
           id: config.searchId
         })
-        return fetch(dispatch)
+        return fetch(dispatch, getState())
       }
     },
     searchQueryChanged: function(field, query, values) {
-      return function(dispatch) {
+      return function(dispatch, getState) {
         dispatch({
           type: SEARCH_QUERY_CHANGED,
           field: field,
@@ -82,10 +90,9 @@ export function actions(config) {
           values: values,
           id: config.searchId
         })
-        return fetch(dispatch)
+        return fetch(dispatch, getState())
       }
     }
   }
 }
-
 
