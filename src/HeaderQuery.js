@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import RangeQuery from './RangeQuery'
-import QueryInput from './QueryInput'
+import QueryInput, {DateInput} from './QueryInput'
 import _ from 'lodash'
 
 const queryChange = (onChange, header, value) => {
@@ -62,9 +62,33 @@ class EqQuery extends React.Component {
   }
 }
 
+class DateEqQuery extends React.Component {
+  static propTypes = {
+    header: PropTypes.object.isRequired,
+    onQueryChange: PropTypes.func.isRequired
+  }
+
+  queryChange() {
+    return (header, val) => {
+      // Replace 'date_eq' with 'eq'
+      // TODO: We probably need to separate component type keys from query type keys.
+      const updatedHeader = _.merge({}, header, {query: {type: 'eq'}})
+
+      queryChange(this.props.onQueryChange, updatedHeader, val)
+    }
+  }
+
+  render() {
+    return (
+      <DateInput {...this.props} queryChange={this.queryChange()} />
+    )
+  }
+}
+
 const components = {
   like: LikeQuery,
   eq: EqQuery,
+  date_eq: DateEqQuery,
   range: RangeQuery
 }
 

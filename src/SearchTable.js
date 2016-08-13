@@ -29,7 +29,7 @@ class SearchTable extends React.Component {
     return {
       searchId,
       dataSource,
-      searchConfig: dataSource.searchConfig
+      initialSearchQuery: dataSource.initialSearchQuery
     }
   }
 

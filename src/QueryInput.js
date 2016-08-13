@@ -65,3 +65,36 @@ export default class QueryInput extends React.Component {
     return <CompletedInput {...this.props} update={this.updateRef()} />
   }
 }
+
+export class DateInput extends React.Component {
+  static propTypes = {
+    header: PropTypes.object.isRequired,
+    queryChange: PropTypes.func.isRequired
+  }
+
+  debounced() {
+    return _.debounce(this.props.queryChange, 1000)
+  }
+
+  updateRef() {
+    const noop = () => { }
+    return this.props.update || noop
+  }
+
+  handleChange(ev) {
+    const { header } = this.props
+    this.props.queryChange(header, ev.target.value)
+  }
+
+  render() {
+    return (
+      <input
+        {...this.props}
+        ref={this.props.update}
+        className="form-control"
+        type="date"
+        onChange={::this.handleChange}
+      />
+    )
+  }
+}

@@ -12,7 +12,7 @@ export const SEARCH_QUERY_CHANGED = "SEARCH_QUERY_CHANGED"
 export const SEARCH_RESULTS_UPDATED = "SEARCH_RESULTS_UPDATED"
 
 const fetcher = config => (dispatch, state) => {
-  const searchQuery = querify(state, config.searchId, config.dataSource.searchConfig)
+  const searchQuery = querify(state, config.searchId, config.dataSource.initialSearchQuery)
 
   dispatch({type: SEARCH_STARTED, id: config.searchId, searchQuery})
   config.dataSource.search(searchQuery, dispatch, state)
@@ -31,7 +31,7 @@ export function CreateSearch(dispatch, config) {
   dispatch({
     type: CREATE_NEW_SEARCH,
     searchId: config.searchId,
-    searchConfig: config.searchConfig
+    initialSearchQuery: config.initialSearchQuery
   })
 }
 

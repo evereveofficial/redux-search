@@ -24,9 +24,9 @@ class SearchListView extends React.Component {
     return {
       searchId,
       dataSource,
-      searchConfig: _.merge(
+      initialSearchQuery: _.merge(
         {},
-        dataSource.searchConfig,
+        dataSource.initialSearchQuery,
         {resultsUpdateStyle: 'append'}
       ),
     }

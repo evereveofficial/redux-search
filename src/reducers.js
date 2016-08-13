@@ -24,10 +24,10 @@ export function querify(state, searchId, dataSourceSearchConfig) {
 
 const searches = []
 
-function initializeSearch(searchId, searchConfig) {
+function initializeSearch(searchId, initialSearchQuery) {
   return defaultReduxSearch.merge({
     id: searchId,
-    ...searchConfig
+    ...initialSearchQuery
   })
 }
 
@@ -44,7 +44,7 @@ const searchStore = createStore(searches, (state, action) => {
   return {
     [actions.CREATE_NEW_SEARCH]: () => [
       ...state,
-      initializeSearch(action.searchId, action.searchConfig)
+      initializeSearch(action.searchId, action.initialSearchQuery)
     ],
 
     [actions.DELETE_SEARCH]: () => _.reject(state, search => search.get('id') === action.searchId),
