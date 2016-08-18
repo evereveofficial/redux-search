@@ -13,6 +13,7 @@ export const defaultReduxSearch = Map({
   sort_field: '',
   sort_order: 'asc',
   q: Map(),
+  searchRequestId: null,
 })
 
 export function querify(state, searchId, dataSourceSearchConfig) {
@@ -50,7 +51,7 @@ const searchStore = createStore(searches, (state, action) => {
     [actions.DELETE_SEARCH]: () => _.reject(state, search => search.get('id') === action.searchId),
 
     [actions.SEARCH_STARTED]: () => mapState(state, action, (search) => {
-      return search.merge({isSearching: true})
+      return search.merge({isSearching: true, searchRequestId: action.searchRequestId})
     }),
 
     [actions.SEARCH_ENDED]: () => mapState(state, action, (search) => {
@@ -68,12 +69,16 @@ const searchStore = createStore(searches, (state, action) => {
     }),
 
     [actions.SEARCH_RESULTS_UPDATED]: () => mapState(state, action, (search) => {
-      return search.merge({
-        total_count: action.total_count,
-        results: search.get('resultsUpdateStyle') === 'append'
-          ? search.get('results').push(...action.results)
-          : action.results
-      })
+      if (action.searchRequestId === search.get('searchRequestId')) {
+        return search.merge({
+          total_count: action.total_count,
+          results: search.get('resultsUpdateStyle') === 'append'
+            ? search.get('results').push(...action.results)
+            : action.results
+        })
+      } else {
+        return search
+      }
     }),
 
     [actions.SEARCH_PAGE_CHANGED]: () => mapState(state, action, (search) => {

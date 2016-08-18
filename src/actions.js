@@ -12,16 +12,20 @@ export const SEARCH_QUERY_CHANGED = "SEARCH_QUERY_CHANGED"
 export const SEARCH_RESULTS_UPDATED = "SEARCH_RESULTS_UPDATED"
 
 const fetcher = config => (dispatch, state) => {
+  // Generate a unique request ID so the reducers can ignore delayed async
+  // responses. We only want last response to affect the end state.
+  const searchRequestId = _.uniqueId(`${config.searchId}_`)
   const searchQuery = querify(state, config.searchId, config.dataSource.initialSearchQuery)
 
-  dispatch({type: SEARCH_STARTED, id: config.searchId, searchQuery})
+  dispatch({type: SEARCH_STARTED, id: config.searchId, searchQuery, searchRequestId})
   config.dataSource.search(searchQuery, dispatch, state)
     .then(searchResponse => {
       dispatch({
         type: SEARCH_RESULTS_UPDATED,
         total_count: searchResponse.total_count,
         results: searchResponse.results || [],
-        id: config.searchId
+        id: config.searchId,
+        searchRequestId
       })
       dispatch({type: SEARCH_ENDED, id: config.searchId})
     })
