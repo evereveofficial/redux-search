@@ -143,6 +143,10 @@ export class DataTable extends React.Component {
       renderRow
     } = this.props;
 
+    const tableStyle = {
+      opacity: search.isSearching ? '0.3' : '1.0'
+    };
+
     return (
       <div className="dataTables_wrapper form-inline dt-bootstrap">
         <div className="row">
@@ -165,7 +169,7 @@ export class DataTable extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-12">
-            <table className="table table-striped table-bordered table-hover dataTables-example dataTable">
+            <table className="table table-striped table-bordered table-hover dataTables-example dataTable" style={tableStyle}>
               <TableHead {...this.props} headers={headers}></TableHead>
               <tbody>{search.results.map(row => renderRow(row))}</tbody>
               <TableFoot headers={headers}></TableFoot>
