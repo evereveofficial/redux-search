@@ -174,3 +174,5 @@ To contribute, please create a fork and submit pull requests. Pull requests from
 
 The test suite can be run with `npm test`. Command line debugging can be achieved with `npm test debug`. The test suite is currently minimal and needs to be expanded.
 Please do not submit new work without tests.
+
+End.
