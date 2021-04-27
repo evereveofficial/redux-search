@@ -94,7 +94,7 @@ export function actions(config) {
           values: values,
           id: config.searchId
         })
-        return fetch(dispatch, getState())
+        // return fetch(dispatch, getState());
       }
     }
   }
