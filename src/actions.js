@@ -50,9 +50,9 @@ export function actions(config) {
   const fetch = fetcher(config)
 
   return {
-    reload: () => {
+    reload: (pathName) => {
       return function(dispatch, getState) {
-        return fetch(dispatch, getState())
+        return pathName === '/orders' || pathName ===  '/customers' ? '' : fetch(dispatch, getState());
       }
     },
     searchSortFieldChanged: (field) => {
@@ -85,7 +85,7 @@ export function actions(config) {
         return fetch(dispatch, getState())
       }
     },
-    searchQueryChanged: function(field, query, values) {
+    searchQueryChanged: function(field, query, values, pathName) {
       return function(dispatch, getState) {
         dispatch({
           type: SEARCH_QUERY_CHANGED,
@@ -94,7 +94,7 @@ export function actions(config) {
           values: values,
           id: config.searchId
         })
-        return fetch(dispatch, getState())
+        return fetch(dispatch, getState());
       }
     }
   }

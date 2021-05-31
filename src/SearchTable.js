@@ -38,7 +38,8 @@ class SearchTable extends React.Component {
   }
 
   componentDidMount() {
-    this.dispatch('reload')
+    var pathName = this.props.location.pathname;
+    this.dispatch('reload', pathName);
   }
 
   componentWillUnmount() {
@@ -51,8 +52,8 @@ class SearchTable extends React.Component {
   }
 
   dispatch(actionName, ...args) {
-    const action = actions(this.config())[actionName](...args)
-    this.props.dispatch(action)
+    const action = actions(this.config())[actionName](...args);
+    this.props.dispatch(action);
   }
 
   handleHeaderClick(field) {
@@ -68,7 +69,8 @@ class SearchTable extends React.Component {
   }
 
   handleQueryChange(field, query, values) {
-    this.dispatch('searchQueryChanged', field, query, values)
+    var pathName = this.props.location.pathname;
+    this.dispatch('searchQueryChanged', field, query, values, pathName);
   }
 
   render() {
